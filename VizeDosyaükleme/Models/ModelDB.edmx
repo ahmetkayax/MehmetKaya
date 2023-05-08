@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ders">
+          <Key>
+            <PropertyRef Name="dersId" />
+          </Key>
+          <Property Name="dersId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dersAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dersBolumu" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dersKodu" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dosya">
+          <Key>
+            <PropertyRef Name="dosyaId" />
+          </Key>
+          <Property Name="dosyaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dosyaAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dosyaYolu" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="konuByID" Type="int" Nullable="false" />
+          <Property Name="dosyaKodu" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Konu">
+          <Key>
+            <PropertyRef Name="konuId" />
+          </Key>
+          <Property Name="konuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="konuAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dersById" Type="int" Nullable="false" />
+          <Property Name="dosyaById" Type="int" Nullable="false" />
+          <Property Name="konuKodu" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Konu_ToDersler">
+          <End Role="Ders" Type="Self.Ders" Multiplicity="1" />
+          <End Role="Konu" Type="Self.Konu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ders">
+              <PropertyRef Name="dersId" />
+            </Principal>
+            <Dependent Role="Konu">
+              <PropertyRef Name="dersById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Konu_ToTDosya">
+          <End Role="Dosya" Type="Self.Dosya" Multiplicity="1" />
+          <End Role="Konu" Type="Self.Konu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosya">
+              <PropertyRef Name="dosyaId" />
+            </Principal>
+            <Dependent Role="Konu">
+              <PropertyRef Name="dosyaById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB05ModelStoreContainer">
+          <EntitySet Name="Ders" EntityType="Self.Ders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dosya" EntityType="Self.Dosya" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Konu" EntityType="Self.Konu" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Konu_ToDersler" Association="Self.FK_Konu_ToDersler">
+            <End Role="Ders" EntitySet="Ders" />
+            <End Role="Konu" EntitySet="Konu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Konu_ToTDosya" Association="Self.FK_Konu_ToTDosya">
+            <End Role="Dosya" EntitySet="Dosya" />
+            <End Role="Konu" EntitySet="Konu" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ders">
+          <Key>
+            <PropertyRef Name="dersId" />
+          </Key>
+          <Property Name="dersId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dersAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dersBolumu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dersKodu" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Konu" Relationship="Self.FK_Konu_ToDersler" FromRole="Ders" ToRole="Konu" />
+        </EntityType>
+        <EntityType Name="Dosya">
+          <Key>
+            <PropertyRef Name="dosyaId" />
+          </Key>
+          <Property Name="dosyaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dosyaAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dosyaYolu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="konuByID" Type="Int32" Nullable="false" />
+          <Property Name="dosyaKodu" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Konu" Relationship="Self.FK_Konu_ToTDosya" FromRole="Dosya" ToRole="Konu" />
+        </EntityType>
+        <EntityType Name="Konu">
+          <Key>
+            <PropertyRef Name="konuId" />
+          </Key>
+          <Property Name="konuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="konuAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dersById" Type="Int32" Nullable="false" />
+          <Property Name="dosyaById" Type="Int32" Nullable="false" />
+          <Property Name="konuKodu" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ders" Relationship="Self.FK_Konu_ToDersler" FromRole="Konu" ToRole="Ders" />
+          <NavigationProperty Name="Dosya" Relationship="Self.FK_Konu_ToTDosya" FromRole="Konu" ToRole="Dosya" />
+        </EntityType>
+        <Association Name="FK_Konu_ToDersler">
+          <End Role="Ders" Type="Self.Ders" Multiplicity="1" />
+          <End Role="Konu" Type="Self.Konu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ders">
+              <PropertyRef Name="dersId" />
+            </Principal>
+            <Dependent Role="Konu">
+              <PropertyRef Name="dersById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Konu_ToTDosya">
+          <End Role="Dosya" Type="Self.Dosya" Multiplicity="1" />
+          <End Role="Konu" Type="Self.Konu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dosya">
+              <PropertyRef Name="dosyaId" />
+            </Principal>
+            <Dependent Role="Konu">
+              <PropertyRef Name="dosyaById" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB05Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ders" EntityType="Self.Ders" />
+          <EntitySet Name="Dosya" EntityType="Self.Dosya" />
+          <EntitySet Name="Konu" EntityType="Self.Konu" />
+          <AssociationSet Name="FK_Konu_ToDersler" Association="Self.FK_Konu_ToDersler">
+            <End Role="Ders" EntitySet="Ders" />
+            <End Role="Konu" EntitySet="Konu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Konu_ToTDosya" Association="Self.FK_Konu_ToTDosya">
+            <End Role="Dosya" EntitySet="Dosya" />
+            <End Role="Konu" EntitySet="Konu" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB05ModelStoreContainer" CdmEntityContainer="DB05Entities">
+          <EntitySetMapping Name="Ders">
+            <EntityTypeMapping TypeName="DB05Model.Ders">
+              <MappingFragment StoreEntitySet="Ders">
+                <ScalarProperty Name="dersId" ColumnName="dersId" />
+                <ScalarProperty Name="dersAdi" ColumnName="dersAdi" />
+                <ScalarProperty Name="dersBolumu" ColumnName="dersBolumu" />
+                <ScalarProperty Name="dersKodu" ColumnName="dersKodu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dosya">
+            <EntityTypeMapping TypeName="DB05Model.Dosya">
+              <MappingFragment StoreEntitySet="Dosya">
+                <ScalarProperty Name="dosyaId" ColumnName="dosyaId" />
+                <ScalarProperty Name="dosyaAdi" ColumnName="dosyaAdi" />
+                <ScalarProperty Name="dosyaYolu" ColumnName="dosyaYolu" />
+                <ScalarProperty Name="konuByID" ColumnName="konuByID" />
+                <ScalarProperty Name="dosyaKodu" ColumnName="dosyaKodu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Konu">
+            <EntityTypeMapping TypeName="DB05Model.Konu">
+              <MappingFragment StoreEntitySet="Konu">
+                <ScalarProperty Name="konuId" ColumnName="konuId" />
+                <ScalarProperty Name="konuAdi" ColumnName="konuAdi" />
+                <ScalarProperty Name="dersById" ColumnName="dersById" />
+                <ScalarProperty Name="dosyaById" ColumnName="dosyaById" />
+                <ScalarProperty Name="konuKodu" ColumnName="konuKodu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
